@@ -92,13 +92,17 @@ let g:ycm_use_ultisnips_completer = 1 "提示UltiSnips
 let g:ycm_collect_identifiers_from_comments_and_strings = 1   "注释和字符串中的文字也会被收入补全
 let g:ycm_collect_identifiers_from_tags_files = 1
 
-"let g:ycm_seed_identifiers_with_syntax=1   "语言关键字补全, 不过python关键字都很短，所以，需要的自己打开
+let g:ycm_seed_identifiers_with_syntax=1   "语言关键字补全, 不过python关键字都很短，所以，需要的自己打开
 
 " 跳转到定义处, 分屏打开
 let g:ycm_goto_buffer_command = 'horizontal-split'
-" nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gd :YcmCompleter GoToDeclaration<CR>
+" for ycm
+ let g:ycm_error_symbol = '>>'
+ let g:ycm_warning_symbol = '>*'
+ nmap <F4> :YcmDiags<CR>
 
 " 引入，可以补全系统，以及python的第三方包 针对新老版本YCM做了兼容
 " old version
@@ -111,14 +115,16 @@ if !empty(glob("~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_
 endif
 
 " 直接触发自动补全 insert模式下
-" let g:ycm_key_invoke_completion = '<C-Space>'
+ let g:ycm_key_invoke_completion = '<C-Space>'
 " 黑名单,不启用
 let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
       \ 'gitcommit' : 1,
       \}
 
+Bundle 'rodjek/vim-puppet'
 
+Bundle 'vim-scripts/VisIncr'
 " 代码片段快速插入 (snippets中,是代码片段资源,需要学习)
 Bundle 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
@@ -153,6 +159,26 @@ inoremap <c-j> <c-r>=g:JInYCM()<cr>
 au BufEnter,BufRead * exec "inoremap <silent> " . g:UltiSnipsJumpBackwordTrigger . " <C-R>=g:KInYCM()<cr>"
 let g:UltiSnipsJumpBackwordTrigger = "<c-k>"
 
+" Auto generate tags & scope files, for python, in
+"   $ sudo pip install pycscope==0.3
+" KEYS:
+"   <F4> (re)Generate tags&cscope.out
+"   <F3> Add addtional ctags file
+ if executable('cscope') && executable('ctags') && executable('md5sum')
+     Bundle 'basilgor/vim-autotags'
+     let g:autotags_ctags_opts="--python-kinds=-iv --c++-kinds=+px --fields=+ialS
+             \ --extra=+q"
+     let g:autotags_cscope_file_extensions=".py .cpp .cc .cxx .m .hpp .hh .h .hxx 
+             \ .c .idl .java"
+     au BufEnter *.py let g:autotags_no_global=1 | if executable('pycscope.py') |
+                 \ let g:autotags_cscope_exe="pycscope.py -i cscope.files -- "| endif
+     au BufLeave *.py let g:autotags_cscope_exe="cscope"
+ endif
+" Cscope key mapping
+" KEYS:
+"   <C-\>{s|g|d|c|t|e|f|i} Find symbol|definition|
+"                          text string|egrep|file|
+Bundle 'steffanc/cscopemaps.vim'
 
 " 自动补全单引号，双引号等
 Bundle 'Raimondi/delimitMate'
@@ -169,12 +195,26 @@ let g:closetag_html_style=1
 
 " ################### 快速编码 ###################
 
-" 快速注释
+" 快速注释"
+" Easy commenting of code for many filetypes
+"KEYS:
+"   [count]<leader>cc       Comment out the curren
+"   [count]<leader>c<space> Toggles the comment st
+"   [count]<leader>cu       Uncomments the selecte
+"   [count]<leader>cA       Adds comment delimiter
+"                           into insert mode betwe
 Bundle 'scrooloose/nerdcommenter'
 let g:NERDSpaceDelims=1
 
-
 " 快速加入修改环绕字符
+" Provides mappings to easily delete, change and a
+"KEYS:
+"  ds  - delete a surrounding, e.g. ds"
+"  cs  - change a surrounding, e.g. cs"', csw), cs
+"  ys  - add a surrounding, e.g. ysiw", ys", ysiwt
+"  yS  - add a surrounding and place the surrounde
+"  yss - add a surrounding to the whole line
+"  ySs/ySS  - add a surrounding to the whole line,
 Bundle 'tpope/vim-surround'
 " for repeat -> enhance surround.vim, . to repeat command
 Bundle 'tpope/vim-repeat'
@@ -447,7 +487,7 @@ hi CtrlSpaceStatus   guifg=#839496 guibg=#002b36 gui=reverse term=reverse cterm=
 
 " 标签导航
 Bundle 'majutsushi/tagbar'
-nmap <F9> :TagbarToggle<CR>
+nmap <Leader>tb :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 " for ruby
 let g:tagbar_type_ruby = {
@@ -495,7 +535,11 @@ let g:tagbar_type_go = {
 
 
 " 去除taglist =>原因: 使用tagbar和ctrlp-funky可以直接快速跳转函数和变量位置,taglist有些多余
+Bundle 'taglist.vim'
 
+"form .c to .h
+
+Bundle 'a.vim'
 " ################### 语言相关 ###################
 
 Bundle 'thinca/vim-quickrun'
@@ -510,7 +554,7 @@ nmap <Leader>r <Plug>(quickrun)
 map <F10> :QuickRun<CR>
 
 " ###### Python #########
-
+Bundle 'VimPdb'
 " python fly check, 弥补syntastic只能打开和保存才检查语法的不足
 Bundle 'kevinw/pyflakes-vim'
 let g:pyflakes_use_quickfix = 0

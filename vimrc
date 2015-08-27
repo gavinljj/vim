@@ -30,7 +30,7 @@ let g:mapleader = ','
 " 开启语法高亮
 syntax on
 
-
+set tags=/Users/gavin/workplace/ijkplayer/tags
 " install Vundle bundles
 if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
@@ -286,10 +286,10 @@ endif
 " 主要按键重定义
 
 " 关闭方向键, 强迫自己用 hjkl
-map <Left> <Nop>
-map <Right> <Nop>
-map <Up> <Nop>
-map <Down> <Nop>
+"map <Left> <Nop>
+"map <Right> <Nop>
+"map <Up> <Nop>
+"map <Down> <Nop>
 
 "Treat long lines as break lines (useful when moving around in them)
 "se swap之后，同物理行上线直接跳
@@ -307,7 +307,7 @@ nnoremap gj j
 " F6 语法开关，关闭语法可以加快大文件的展示
 
 " I can type :help on my own, thanks.  Protect your fat fingers from the evils of <F1>
-noremap <F1> <Esc>"
+"noremap <F1> <Esc>"
 
 ""为方便复制，用<F2>开启/关闭行号显示:
 function! HideNumber()
@@ -320,11 +320,11 @@ function! HideNumber()
   endif
   set number?
 endfunc
-nnoremap <F2> :call HideNumber()<CR>
-nnoremap <F3> :set list! list?<CR>
-nnoremap <F4> :set wrap! wrap?<CR>
+"nnoremap <F2> :call HideNumber()<CR>
+"nnoremap <F3> :set list! list?<CR>
+"nnoremap <F4> :set wrap! wrap?<CR>
               "set paste
-set pastetoggle=<F5>            "    when in insert mode, press <F5> to go to
+"set pastetoggle=<F5>            "    when in insert mode, press <F5> to go to
                                 "    paste mode, where you can paste mass data
                                 "    that won't be autoindented
 
@@ -486,7 +486,7 @@ nnoremap ' `
 nnoremap ` '
 
 " remap U to <C-r> for easier redo
-nnoremap U <C-r>
+"nnoremap U <C-r>
 
 " Quickly edit/reload the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -565,8 +565,8 @@ endif
 " theme主题
 set background=dark
 set t_Co=256
-colorscheme solarized
-" colorscheme molokai
+"colorscheme solarized
+ colorscheme molokai
 " colorscheme Tomorrow-Night
 " colorscheme Tomorrow-Night-Bright
 " colorscheme desert
