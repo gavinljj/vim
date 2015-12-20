@@ -166,10 +166,11 @@ let g:UltiSnipsJumpBackwordTrigger = "<c-k>"
 "   <F3> Add addtional ctags file
  if executable('cscope') && executable('ctags') && executable('md5sum')
      Bundle 'basilgor/vim-autotags'
+    nnoremap <Leader>tu :call  AutotagsUpdate()<cr>
+    nnoremap <Leader>ta :call  AutotagsAdd()<cr>
      let g:autotags_ctags_opts="--python-kinds=-iv --c++-kinds=+px --fields=+ialS
              \ --extra=+q"
-     let g:autotags_cscope_file_extensions=".py .cpp .cc .cxx .m .hpp .hh .h .hxx 
-             \ .c .idl .java"
+"     let g:autotags_cscope_file_extensions=".c .py .cpp .cc .cxx .m .hpp .hh .h .hxx"
      au BufEnter *.py let g:autotags_no_global=1 | if executable('pycscope.py') |
                  \ let g:autotags_cscope_exe="pycscope.py -i cscope.files -- "| endif
      au BufLeave *.py let g:autotags_cscope_exe="cscope"
@@ -222,7 +223,6 @@ Bundle 'tpope/vim-repeat'
 " 快速去行尾空格 [, + <Space>]
 Bundle 'bronson/vim-trailing-whitespace'
 map <leader><space> :FixWhitespace<cr>
-
 " 快速赋值语句对齐
 Bundle 'junegunn/vim-easy-align'
 vmap <Leader>a <Plug>(EasyAlign)
@@ -536,7 +536,10 @@ let g:tagbar_type_go = {
 
 " 去除taglist =>原因: 使用tagbar和ctrlp-funky可以直接快速跳转函数和变量位置,taglist有些多余
 Bundle 'taglist.vim'
-
+let Tlist_Show_One_File = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Use_Right_Window = 1
+let Tlist_GainFocus_On_ToggleOpen = 1
 "form .c to .h
 
 Bundle 'a.vim'
